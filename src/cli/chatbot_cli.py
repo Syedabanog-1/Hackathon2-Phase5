@@ -67,16 +67,69 @@ async def chat_endpoint(request: ChatRequest):
     agent = api_resources.get('agent')
     if not agent:
         return {"success": False, "message": "Agent not active"}
-    
+
     # Optional: Handle language translation here using api_resources['translator']
     # For now, pass direct message
-    
+
     msg = request.message
     # If language is provided, we could translate input/output
     # But sticking to simple agent process for now as per minimal request
-    
+
     result = agent.process(msg)
     return result
+
+
+@app.get("/api/todos")
+async def get_todos():
+    """
+    Get all todos from the repository.
+    """
+    try:
+        agent = api_resources.get('agent')
+        if not agent:
+            return []
+
+        # Access the repository through the agent
+        # Using get_all() method which returns all tasks
+        if hasattr(agent, 'repository'):
+            todos = agent.repository.get_all()
+            # Convert to simple dict format for JSON response
+            # Note: Task model might have 'description' instead of 'title'
+            return [{"id": t.id, "title": t.description, "completed": t.status == "completed"} for t in todos]
+        else:
+            return []
+    except Exception as e:
+        print(f"Error getting todos: {e}")
+        return []
+
+
+@app.post("/api/chat")
+async def web_chat_endpoint(request: ChatRequest):
+    """
+    Web-specific chat endpoint that returns both response and todos.
+    """
+    agent = api_resources.get('agent')
+    if not agent:
+        return {"success": False, "message": "Agent not active"}
+
+    msg = request.message
+    result = agent.process(msg)
+
+    # Get updated todos after processing the command
+    todos = []
+    try:
+        if hasattr(agent, 'repository'):
+            todo_objects = agent.repository.get_all()
+            todos = [{"id": t.id, "title": t.description, "completed": t.status == "completed"} for t in todo_objects]
+    except Exception as e:
+        print(f"Error getting todos: {e}")
+
+    # Return both the chat response and the updated todo list
+    return {
+        "response": result.get("message", ""),
+        "success": result.get("success", False),
+        "todos": todos
+    }
 
 
 # ==============================

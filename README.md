@@ -119,6 +119,60 @@ For detailed documentation, see:
 - [Data Model](specs/001-multimodal-todo-chatbot/data-model.md)
 - [Research](specs/001-multimodal-todo-chatbot/research.md)
 
+## Web Interface
+
+The application now includes a web interface that can be hosted on GitHub Pages, with the backend deployed to Railway.
+
+### Frontend Files
+- `index.html` - Main web interface
+- `styles.css` - Styling for the interface
+- `script.js` - JavaScript functionality
+
+### Deployment
+
+#### Backend (Railway)
+
+1. Create an account on [Railway](https://railway.app)
+2. Create a new project and connect your GitHub repository
+3. Set the following environment variables:
+   - `OPENAI_API_KEY` - Your OpenAI API key
+   - `DATABASE_PATH` - Path to SQLite database (default: `data/tasks.db`)
+4. Set the start command to: `python run_server.py`
+5. Deploy the application
+6. Note the deployed URL (e.g., `https://your-app-name.up.railway.app`)
+
+#### Frontend (GitHub Pages)
+
+1. Push the frontend files (index.html, styles.css, script.js) to your repository
+2. Go to your repository settings
+3. In the "Pages" section, select source as the main branch
+4. The frontend will be available at `https://your-username.github.io/repository-name`
+
+#### Configuration
+
+After deploying the backend, update the `BACKEND_URL` in `script.js`:
+
+```javascript
+const BACKEND_URL = 'https://your-railway-app-url.railway.app'; // Replace with your Railway URL
+```
+
+### API Endpoints
+
+- `GET /` - Health check
+- `POST /chat` - Process chat message (CLI endpoint)
+- `GET /api/todos` - Get all todos
+- `POST /api/chat` - Web chat endpoint (returns response + todos)
+
+## Running the Server
+
+To run the backend server locally:
+
+```bash
+python run_server.py
+```
+
+The server will start on `http://localhost:8000` with API documentation available at `http://localhost:8000/docs`.
+
 ## License
 
 [Your License Here]
