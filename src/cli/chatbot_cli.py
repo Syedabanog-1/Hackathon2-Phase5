@@ -1,3 +1,5 @@
+
+
 """
 Main entry point for the chatbot CLI application.
 Console-first, API-ready design.
