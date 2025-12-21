@@ -3,34 +3,24 @@
   "builds": [
     {
       "src": "api/index.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "15mb"
-      }
+      "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "api/index.py"
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/api/index.py"
     },
     {
       "src": "/(.*)",
-      "dest": "api/index.py"
+      "dest": "/api/index.py"
     }
   ],
   "env": {
     "PYTHON_VERSION": "3.11"
-  },
-  "build": {
-    "env": {
-      "PYTHON_VERSION": "3.11"
-    }
-  },
-  "functions": {
-    "api/index.py": {
-      "memory": 1024,
-      "maxDuration": 10
-    }
   }
 }

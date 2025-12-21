@@ -228,13 +228,30 @@ async def simple_chat(request: ChatRequest):
         }
 
 # Static files (if needed)
-@app.get("/index.html")
+@app.get("/")
 async def serve_index():
     """Serve frontend if available"""
     index_path = Path(__file__).parent.parent / "index.html"
     if index_path.exists():
         return FileResponse(index_path)
     return {"message": "Frontend not available in serverless mode"}
+
+@app.get("/index.html")
+async def serve_index_html():
+    """Serve frontend if available"""
+    index_path = Path(__file__).parent.parent / "index.html"
+    if index_path.exists():
+        return FileResponse(index_path)
+    return {"message": "Frontend not available in serverless mode"}
+
+# Serve static files
+@app.get("/{path:path}.{ext:css|js|png|jpg|jpeg|gif|ico|svg}")
+async def serve_static(path: str, ext: str):
+    """Serve static files"""
+    file_path = Path(__file__).parent.parent / f"{path}.{ext}"
+    if file_path.exists():
+        return FileResponse(file_path)
+    return {"error": "File not found"}
 
 # Export for Vercel
 __all__ = ['app']

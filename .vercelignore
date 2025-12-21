@@ -1,58 +1,26 @@
-# Vercel deployment - ignore heavy/unnecessary files
+# Vercel ignore file to exclude large or unnecessary files
 
-# Source code (using simplified api/index.py instead)
-src/
+# Ignore log files
+logs/
+*.log
 
-# Testing
-test_*.py
-tests/
-pytest.ini
+# Ignore data files (these are for local storage only)
+data/
 
-# Documentation
-specs/
-history/
-docs/
-*.md
-!README.md
-
-# Local development
-.env
-.env.local
-config/
-*.db
-*.sqlite
-*.sqlite3
-
-# Build artifacts
+# Ignore local Python cache
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-*.egg
-*.egg-info/
-dist/
-build/
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-.DS_Store
-
-# Git
+# Ignore git-related files
 .git/
 .gitignore
 
-# Heavy dependencies not needed for serverless
-deploy.sh
-deploy.bat
-Dockerfile
-railway.config
+# Ignore local environment files (but keep .env.example)
+.env
 
-# Claude/Specify
-.claude/
-.specify/
-CLAUDE.md
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore test databases
+*.db
